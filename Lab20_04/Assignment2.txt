@@ -1,0 +1,69 @@
+create table EMP1(ID int(2), Name varchar(10),Basic decimal(6,2),designation varchar(10), Age int(2));
+
+#Change the data type of the field Basic from float to integer with required size of the table.
+ALTER TABLE EMP1 MODIFY COLUMN  Basic float(5);
+ALTER TABLE EMP1 MODIFY COLUMN  Basic int(5);
+
+
+#Change the field size of Name column of the EMP1 table from 10 to 15. 
+ALTER TABLE EMP1 MODIFY COLUMN  Name varchar(15);
+desc emp1;
+
+#Create another table EMP_trainee 
+create table EMP_trainee( Emp_id int(2),Name varchar(15), Basic int(4),designation varchar(10), Age int(2));
+
+insert into EMP1 values
+(1, 'Rohit', 6700, 'Manager', 24),
+(2, 'Sunil', 6200, 'Engineer', 27),
+(3, 'Payal', 6300, 'Engineer', 25),
+(4, 'Kunal', 6700, 'Trainee', 28),
+(5, 'Sunita', 6230, 'Trainee', 26),
+(6, 'Bimal', 7000, 'Trainee', 25);
+
+
+#Insert all rows with the designation ‘trainee’ from the EMP1 table to EMP_trainee table
+insert into emp_trainee select* from emp1 where designation='trainee';
+
+desc emp1;
+desc emp_trainee;
+
+# Add columns Skills (data type-varchar2 and size-10) and DOJ (data type-date) to the EMP1 table and add data for the Skills and DOJ columns according to your own wish. 
+alter table emp1 add column Skills varchar(10);
+alter table emp1 add column DOJ date;
+
+insert into emp1 (Skills,DOJ) values('MS-Office','2023-04-20');
+
+#Change the designation of all trainees in EMP_trainee table to ‘Programmer _Trainee’.
+alter table emp_trainee modify designation varchar(20);
+update emp_trainee set designation ='Programmer_Trainee';
+
+#Update more than one row in one query in EMP1 table.
+update emp1 set Basic=4500 where designation='Trainee';
+
+#.Change the data type of ID in EMP1 table to varchar2 and increase the data size to 5.
+ALTER TABLE EMP1 MODIFY COLUMN  ID varchar(5);
+
+#Display both the tables EMP1 and EMP_trainee
+select*from emp1;
+select*from emp_trainee;
+
+#Rename the column Age of EMP1 table to Age_in_Years
+alter table emp1 change column Age Age_in_Years int(2);
+
+#Delete the details of all the trainees from the EMP1 table.
+delete from emp1 where designation='Trainee';
+
+#.Drop the Age column from the EMP_trainee table.
+ALTER TABLE emp_trainee DROP COLUMN Age;
+
+#Drop two columns in one query from EMP_trainee table
+#ALTER TABLE emp_trainee DROP COLUMN Emp_id, Name;
+
+#Rename the table EMP to EMP_Mgr_Engr
+rename table emp1 to EMP_Mgr_Engr;
+
+#Drop the table EMP_Trainee. 
+drop table emp_trainee;
+
+#Truncate EMP_Mgr_Engr table.
+truncate EMP_Mgr_Engr;

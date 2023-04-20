@@ -1,0 +1,52 @@
+#created customer table
+CREATE table customer(cust_id varchar(5),Fname varchar(15),Lname varchar(15),Area char(2),Phone int(10) ,DOB date, Payment double(6,2)); 
+
+insert into customer values('A01','Ivan','Ross','SA',6125467,'1986-01-15',800.50);
+insert into customer values('A02','Vandana','Ray','MU',5560379,'1987-12-20',1000.75);
+insert into customer values('A03','Pramada','Jauguste','DA',4560389,'1967-07-25',500.00);
+insert into customer values('A04','Basu','Navindi','BA',6125401 ,'1956-02-30',860.00);
+insert into customer values('A05','Ravi','Shridhar','NA',null,'1989-02-15',500.50);
+insert into customer values('A06','Rukmini','Aiyer','GH',5125274 ,'1987-07-23',1500.50);
+
+#to display structure
+DESC customer;
+
+#to display data
+SELECT * FROM student.customer;
+
+#Insert a row which will accept system date
+insert into customer(DOB) values('2023-04-20');
+
+#Display the data in the table.
+SELECT * FROM student.customer;
+
+#Update the phone numbers of customer A02 and A04.
+update customer set Phone=201001 where cust_id='A02';
+update customer set Phone=201005 where cust_id='A04';
+
+#Update the date of birth of customer A03 and A05.
+update customer set DOB='2001-09-06' where cust_id='A03';
+update customer set DOB='2022-06-09' where cust_id='A05';
+
+SELECT * FROM student.customer;
+
+#Delete 2 rows from the table for customers A01 and A05
+DELETE FROM customer where cust_id='A01';
+delete from customer where cust_id='A05';
+
+#Delete all the rows from the table
+DELETE from customer;
+
+#Insert 5 records according to your own wish.
+insert into customer values
+('A1','Upasna','Aggarwal','GH',954057,'2002-06-09',100.25),
+('A2','Sunita','Garg','DE',936869,'1978-09-09',1100.00),
+('A3','RAHUL','Nagar','CH',10205,'1985-09-17',120.50),
+('A4','SANA','Adil','MU',120046,'1852-01-19',130.20),
+('A5','ARYAN','Khan','DE',785475,'1952-04-09',140.30);
+
+#Update one record based on any criteria according to your own wish
+update customer set DOB='2000-09-06' where cust_id='A3';
+
+#Delete any 1 record from the table based on particular criteria
+DELETE FROM customer where cust_id='A5';
