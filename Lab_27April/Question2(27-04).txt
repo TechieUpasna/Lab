@@ -1,0 +1,140 @@
+ID:
+package hibernate.onetoone;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+	@Entity
+	@Table(name="ID_num")
+public class ID {
+	@Id
+	@Column(name="Student_id")
+	private int Id;
+	private int id_num;
+	public int getAdhaarNum() {
+	return id_num;
+	}
+	public void setAdhaarNum(int id_num) {
+	this.id_num = id_num;
+	}
+	public int getId() {
+		return Id;
+	}
+	public void setId(int id) {
+	this.Id = Id;
+	}
+	public ID(int Id) {
+	super();
+	this.Id = Id;
+	}
+	}
+
+Main Class
+
+package hibernate.onetoone;
+
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+public class MainApp {
+public static void main(String[] args) {
+Student s1 = new Student("Sana Saifi");
+ID id = new ID(71122345);
+s1.setID(id);
+Transaction txn;
+try(Session session=HibernateUtil.getSessionFactory().openSession()){
+txn = session.beginTransaction();
+session.save(s1);
+txn.commit();
+}
+}
+}
+Student.java
+
+package hibernate.onetoone;
+import jakarta.persistence.*;
+@Entity
+@Table(name="Student_name")
+public class Student {
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name="per_id")
+	private int Id;
+	private String name;
+	@OneToOne(cascade=CascadeType.ALL)
+	@JoinColumn(name="Student_id")
+	private ID id;
+	public int getId() {
+	return Id;
+	}
+	public void setId(int Id) {
+	this.Id = Id;
+	}
+	public String getName() {
+	return name;
+	}
+	public void setName(String name) {
+	this.name = name;
+	}
+	
+	public ID getID() {
+	return id;
+	}
+	public void setID(ID id) {
+	this.id = id;
+	}
+	public Student(String name) {
+	super();
+	this.name = name;
+	}
+	public Student() {
+	}
+	}
+
+
+
+
+
+-pom.xml
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.hibernate.student</groupId>
+  <artifactId>4119hibernate.student.1to1</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <name>4119hibernate.student.1to1</name>
+  <dependencies>
+<!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
+<dependency>
+<groupId>mysql</groupId>
+<artifactId>mysql-connector-java</artifactId>
+<version>8.0.32</version>
+</dependency>
+<!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-core -->
+<dependency>
+<groupId>org.hibernate</groupId>
+<artifactId>hibernate-core</artifactId>
+<version>6.1.7.Final</version>
+</dependency>
+</dependencies>
+</project>
+
+
+
+
+
+-hibernate.cfg.xml
+<?xml version="1.0" encoding="UTF-8"?>
+<hibernate-configuration>
+<session-factory>
+<!-- JDBC Database connection settings -->
+<property name="connection.driver_class">com.mysql.cj.jdbc.Driver</property>
+<property name="connection.url">jdbc:mysql://localhost:3307/1to1</property>
+<property name="connection.username">root</property>
+<property name="connection.password">root</property>
+<!-- Echo the SQL to stdout -->
+<property name="show_sql">true</property>
+<!-- Set the current session context -->
+<property name="hbm2ddl.auto">create-drop</property>
+<mapping class="hibernate.onetoone.Student" />
+<mapping class="hibernate.onetoone.ID" />
+</session-factory>
+</hibernate-configuration>

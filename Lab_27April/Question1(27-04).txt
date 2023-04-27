@@ -1,0 +1,123 @@
+HibernateUtil.java
+package hibernate.theater;
+import org.hibernate.SessionFactory;
+import org.hibernate.boot.Metadata;
+import org.hibernate.boot.MetadataSources;
+import org.hibernate.boot.registry.StandardServiceRegistry;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+public class HibernateUtil {
+private static StandardServiceRegistry registry;
+private static SessionFactory sessionFactory;
+public static SessionFactory getSessionFactory(){
+try {
+registry = new StandardServiceRegistryBuilder().configure().build();
+MetadataSources sources = new MetadataSources(registry);
+Metadata metaData = sources.getMetadataBuilder().build();
+sessionFactory = metaData.getSessionFactoryBuilder().build();
+}catch(Exception ex) {
+ex.printStackTrace();
+}
+return sessionFactory;
+}
+
+}
+
+
+MainTheater.java
+package hibernate.theater;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+public class MainTheater {
+	public static void main(String[] args) {
+	Theater t1 = new Theater(101," Pathaan");
+	Theater t2 = new Theater(102,"Sita Ramam");
+	Theater t3 = new Theater(103,"Bahubali");
+	Transaction txn;
+	try(Session session = HibernateUtil.getSessionFactory().openSession()){
+	txn = session.beginTransaction();
+	session.save(t1);
+	session.save(t2);
+	session.save(t3);
+	txn.commit();
+	}
+	}
+	}
+package hibernate.theater;
+import jakarta.persistence.*;
+@Entity
+@Table(name="Theater")
+public class Theater {
+	
+	@Id
+	@GeneratedValue(strategy=GenerationType.SEQUENCE)
+	@Column(name="ticket")
+	private int movie_ticket;
+	private String Movie_name;
+	
+	public int getMovieticket() {
+		return movie_ticket;
+	}
+	public void setBookid(int movie_ticket) {
+		this.movie_ticket = movie_ticket;
+	}
+	public String getMoviename() {
+		return Movie_name;
+	}
+	public void setBookName(String Movie_name) {
+		this.Movie_name = Movie_name;
+	
+	}
+	public Theater(int movie_ticket, String Movie_name) {
+	super();
+	this.movie_ticket = movie_ticket;
+	this.Movie_name = Movie_name;
+	}
+	@Override
+	public String toString() {
+	return "Theater [movie_ticket=" + movie_ticket + ", Movie_name=" + Movie_name + "]";
+	}
+	}
+
+-hibernate.cfg.xml
+<?xml version="1.0" encoding="UTF-8"?>
+<hibernate-configuration>
+<session-factory>
+<!-- JDBC Database connection settings -->
+<property name="connection.driver_class">com.mysql.cj.jdbc.Driver</property>
+<property name="connection.url">jdbc:mysql://localhost:3307/theater</property>
+<property name="connection.username">root</property>
+<property name="connection.password">root</property>
+<!-- Echo the SQL to stdout -->
+<property name="show_sql">true</property>
+<!-- Set the current session context -->
+<property name="hbm2ddl.auto">create-drop</property>
+<mapping class="hibernate.theater.Theater" />
+</session-factory>
+</hibernate-configuration>
+
+
+
+
+-pom.xml
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.sana.hibernate.threater</groupId>
+  <artifactId>4119hibernate.threater</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <name>4119hibernate.threater</name>
+  <dependencies>
+  <!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
+  <dependency>
+   <groupId>org.hibernate</groupId>
+   <artifactId>hibernate-core</artifactId>
+   <version>6.2.1.Final</version>
+</dependency>
+<dependency>
+<groupId>mysql</groupId>
+<artifactId>mysql-connector-java</artifactId>
+<version>8.0.32</version>
+
+</dependency>
+  </dependencies>
+</project>
